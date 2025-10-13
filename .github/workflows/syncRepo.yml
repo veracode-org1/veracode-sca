@@ -25,11 +25,11 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           path: ghes-actions-integrationin
 
-      - name: Copy dist and .yml files to ghes-actions-integration action folder
+      - name: Copy dist and action.yml files to ghes-actions-integration/actions folder
         run: |
           mkdir -p ghes-actions-integrationin/actions
           cp -r veracode-sca/dist ghes-actions-integrationin/actions/sca-scan/
-          cp veracode-sca/action.yml ghes-actions-integrationin/actions/sca-scan/ || true
+          cp veracode-sca/action.yml ghes-actions-integrationin/actions/sca-scan/
 
       - name: Commit and push changes to ghes-actions-integration
         run: |
@@ -38,5 +38,5 @@ jobs:
           git config user.email "skesavan@veracode.com"
           git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/veracode-org1/ghes-actions-integration.git
           git add actions
-          git commit -m "Sync Veracode SCA dist and yml files $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
+          git commit -m "Sync Veracode SCA dist and yml"
           git push
