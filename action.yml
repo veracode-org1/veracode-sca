@@ -6,7 +6,7 @@ branding:
   color: 'blue'
 inputs:
   github_token:
-    description: "Authorization token to query and create issues"
+    description: "Authorization token to query and create issues santhosh"
     default: ${{ github.token }}
     required: true
   quick:
