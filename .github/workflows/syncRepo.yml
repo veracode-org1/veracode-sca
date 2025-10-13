@@ -19,19 +19,19 @@ jobs:
           repository: veracode-org1/veracode-sca
           path: veracode-sca
 
-      - name: Checkout ghes-actions-integrationin repo
+      - name: Checkout ghes-actions-integration repo
         uses: actions/checkout@v4
         with:
-          repository: veracode-org1/ghes-actions-integrationin
+          repository: veracode-org1/ghes-actions-integration
           path: ghes-actions-integrationin
 
-      - name: Copy dist and .yml files to ghes-actions-integrationin action folder
+      - name: Copy dist and .yml files to ghes-actions-integration action folder
         run: |
           mkdir -p ghes-actions-integrationin/actions
           cp -r veracode-sca/dist ghes-actions-integrationin/actions/sca-scan/
           cp veracode-sca/action.yml ghes-actions-integrationin/actions/sca-scan/ || true
 
-      - name: Commit and push changes to ghes-actions-integrationin
+      - name: Commit and push changes to ghes-actions-integration
         run: |
           cd ghes-actions-integrationin
           git config --global user.name "santhoshVC92"
