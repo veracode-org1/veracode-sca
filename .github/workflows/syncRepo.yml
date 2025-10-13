@@ -16,7 +16,6 @@ jobs:
       - name: Checkout veracode-sca repo
         uses: actions/checkout@v4
         with:
-          repository: veracode-org1/veracode-sca
           path: veracode-sca
 
       - name: Checkout ghes-actions-integration repo
