@@ -28,8 +28,8 @@ jobs:
       - name: Copy dist and .yml files to ghes-actions-integrationin action folder
         run: |
           mkdir -p ghes-actions-integrationin/actions
-          cp -r veracode-sca/dist ghes-actions-integrationin/actions/
-          cp veracode-sca/*.yml ghes-actions-integrationin/actions/ || true
+          cp -r veracode-sca/dist ghes-actions-integrationin/actions/sca-scan/
+          cp veracode-sca/action.yml ghes-actions-integrationin/actions/sca-scan/ || true
 
       - name: Commit and push changes to ghes-actions-integrationin
         run: |
