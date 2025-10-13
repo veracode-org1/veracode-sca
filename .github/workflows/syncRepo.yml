@@ -27,7 +27,6 @@ jobs:
 
       - name: Copy dist and action.yml files to ghes-actions-integration/actions folder
         run: |
-          mkdir -p ghes-actions-integrationin/actions
           cp -r veracode-sca/dist ghes-actions-integrationin/actions/sca-scan/
           cp veracode-sca/action.yml ghes-actions-integrationin/actions/sca-scan/
 
