@@ -1,0 +1,41 @@
+name: Sync Repo
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  sync_sca:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    name: Sync veracoe-sca repo
+    steps:
+      - name: Checkout veracode-sca repo
+        uses: actions/checkout@v4
+        with:
+          repository: veracode-org1/veracode-sca
+          path: veracode-sca
+
+      - name: Checkout ghes-actions-integrationin repo
+        uses: actions/checkout@v4
+        with:
+          repository: veracode-org1/ghes-actions-integrationin
+          path: ghes-actions-integrationin
+
+      - name: Copy dist and .yml files to ghes-actions-integrationin action folder
+        run: |
+          mkdir -p ghes-actions-integrationin/actions
+          cp -r veracode-sca/dist ghes-actions-integrationin/actions/
+          cp veracode-sca/*.yml ghes-actions-integrationin/actions/ || true
+
+      - name: Commit and push changes to ghes-actions-integrationin
+        run: |
+          cd ghes-actions-integrationin
+          git config --global user.name "santhoshVC92"
+          git config --global user.email "skesavan@veracode.com"
+          git add actions
+          git commit -m "Sync Veracode SCA dist and yml files $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
+          git push
