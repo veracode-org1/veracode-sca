@@ -1,6 +1,6 @@
 # action.yml
 name: 'Veracode Dependency Scanning'
-description: 'An action to execute Veracode Agent-Based SCA and import findings as issues'
+description: 'An action to execute Veracode Agent-Based SCA and import findings as issues santhosh'
 branding:
   icon: 'play'
   color: 'blue'
