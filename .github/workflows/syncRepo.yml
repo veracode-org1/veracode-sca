@@ -1,15 +1,12 @@
 name: Sync Action into Veracode
 
 on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
+  push:
+    tags:
+      - v**
 
 jobs:
   sync:
-    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     name: Sync Veracode SCA Repo
     steps:
