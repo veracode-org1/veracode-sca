@@ -34,5 +34,5 @@ jobs:
           git config user.email "skesavan@veracode.com"
           git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/veracode-org1/ghes-actions-integration.git
           git add actions
-          git commit -m "Sync Veracode SCA dist and action.yml"
+          git diff --cached --quiet || git commit -m "Sync Veracode SCA dist and action.yml"
           git push
