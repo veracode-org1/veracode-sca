@@ -32,6 +32,8 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           path: ghes-actions-integration
           commit-message: "Sync Veracode SCA dist and action.yml"
+          committer: santhoshVC92 <skesavan@veracode.com>
+          author: santhoshVC92 <skesavan@veracode.com>
           branch: sync-sca-${{ github.run_number }}
           base: main
           title: "Sync latest changes from veracode-sca repository"
