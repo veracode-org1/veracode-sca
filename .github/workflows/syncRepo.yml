@@ -1,36 +1,52 @@
 name: Sync Action into Veracode
-
 on:
-  workflow_dispatch:     # We will modify execution based on our requirement
+  push:
+    tags:
+      - v**
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     name: Sync Veracode SCA Repo
     steps:
-      - name: Checkout repository
+      - name: Checkout veracode-sca repo
         uses: actions/checkout@v4
         with:
           path: veracode-sca
 
-      - name: Checkout ghes-actions-integration repository
+      - name: Checkout ghes-actions-integration repo
+        uses: actions/checkout@v4
+        with:
+          repository: veracode-org1/ghes-actions-integration
+          token: ${{ secrets.PAT_TOKEN }}
+          path: ghes-actions-integration
+
+      - name: Copy dist and action.yml files to ghes-actions-integration/actions/sca-scan folder
         run: |
-          git clone --depth=1 https://github.com/veracode-org1/ghes-actions-integration.git /tmp/verademo-javascript-api
+          cp -r veracode-sca/dist ghes-actions-integration/actions/sca-scan/
+          cp veracode-sca/action.yml ghes-actions-integration/actions/sca-scan/
 
-      - name: Update folder with Action contents
+      - name: Create branch and commit changes
         run: |
-          # Remove old folder
-          rm -rf actions/veracode-tmp
-          mkdir -p actions/veracode-tmp
+          cd ghes-actions-integration
+          git config user.name "santhoshVC92"
+          git config user.email "skesavan@veracode.com"
+          BRANCH_NAME="sync-sca-$(date +%s)"
+          git checkout -b $BRANCH_NAME
+          git add actions
+          git diff --cached --quiet || git commit -m "Sync Veracode SCA dist and action.yml"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/veracode-org1/ghes-actions-integration.git
+          git push origin $BRANCH_NAME
 
-          # Copy contents from repoA
-          cp -r /tmp/verademo-javascript-api/* actions/veracode-tmp
-
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "santhoshVC92"
-          git config --global user.email "skesavan@veracode.com"
-
-          git add actions/veracode-tmp
-          git commit -m "Sync <action_name> main branch $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
-          git push
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          path: ghes-actions-integration
+          branch: ${{ env.BRANCH_NAME }}
+          base: main
+          title: "Sync latest changes from veracode-sca repository"
+          body: |
+            This PR syncs the latest changes from veracode-sca repository.
+            - Updated dist folder
+            - Updated action.yml file
