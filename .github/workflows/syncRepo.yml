@@ -1,9 +1,7 @@
 name: Sync Action into Veracode
 
 on:
-  push:
-    tags:
-      - v**
+  workflow_dispatch:     # We will modify execution based on our requirement
 
 jobs:
   sync:
