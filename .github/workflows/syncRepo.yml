@@ -17,18 +17,22 @@ jobs:
 
       - name: Checkout ghes-actions-integration repository
         run: |
-          git clone --depth=1 https://github.com/veracode-org1/ghes-actions-integration.git ghes-actions-integration
+          git clone --depth=1 https://github.com/veracode-org1/ghes-actions-integration.git /tmp/verademo-javascript-api
 
-      - name: Copy dist and action.yml files to ghes-actions-integration/actions/sca-scan folder
+      - name: Update folder with Action contents
         run: |
-          cp -r veracode-sca/dist ghes-actions-integration/actions/sca-scan/
-          cp veracode-sca/action.yml ghes-actions-integration/actions/sca-scan/
+          # Remove old folder
+          rm -rf actions/veracode-tmp
+          mkdir -p actions/veracode-tmp
 
-      - name: Commit and push changes to ghes-actions-integration
+          # Copy contents from repoA
+          cp -r /tmp/verademo-javascript-api/* actions/veracode-tmp
+
+      - name: Commit and push changes
         run: |
-          cd ghes-actions-integration
-          git config user.name "santhoshVC92"
-          git config user.email "skesavan@veracode.com"
-          git add actions
-          git diff --cached --quiet || git commit -m "Sync Veracode SCA dist and action.yml"
+          git config --global user.name "santhoshVC92"
+          git config --global user.email "skesavan@veracode.com"
+
+          git add actions/veracode-tmp
+          git commit -m "Sync <action_name> main branch $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
           git push
